@@ -26,6 +26,11 @@ const users = {
             "id": 2,
             "name": "Sanji",
             "gender": "Male"
+        },
+        {
+            "id": 4,
+            "name": "Robin",
+            "gender": "Female"
         }
     ]
 };
@@ -50,16 +55,17 @@ const userData = createHashMap(users.Users);
 
 app.get('/', (req, res) => res.send('Express on vercel!'));
 
-app.get('/get-users', async (req, res) => { 
+app.get('/get-pirates', async (req, res) => { 
     const response = Object.values(userData);
     if (response == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
         return;
     }
-    res.send(response); 
+    var prettifyResponse = `<pre>${JSON.stringify(response, null, ' ')}</pre>`;
+    res.send(prettifyResponse); 
 });
 
-app.get('/get-user/:id', async (req, res) => {
+app.get('/get-pirate/:id', async (req, res) => {
     var user = userData[req.params.id];
     if (user == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
