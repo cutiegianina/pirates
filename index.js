@@ -26,6 +26,8 @@ const createHashMap = (data) =>  {
 const jsonUserData = JSON.parse(users).Users;
 const userData = createHashMap(jsonUserData);
 
+app.get('/', (req, res) => res.send('Express on vercel!'));
+
 app.get('/get-users', async (req, res) => { 
     const response = Object.values(userData);
     if (response == null) {
