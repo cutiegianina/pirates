@@ -9,7 +9,7 @@ app.use(express.json());
 app.use('/api/v1', router);
 
 
-const users = await readFile('../data/users.json', 'utf-8');
+const users = await readFile('data/users.json', 'utf-8');
 
 const createHashMap = (data) =>  {
     const tempData = {};
