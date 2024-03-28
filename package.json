@@ -3,6 +3,7 @@
     "express": "^4.18.3"
   },
   "type": "module",
+  "main": "api/index.js",
   "scripts": {
     "vercel-build": "echo hi pirates!"
   }

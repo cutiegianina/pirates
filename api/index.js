@@ -53,7 +53,7 @@ router.get('/get-user/:id', async (req, res) => {
 router.post('/create-user', (req, res) => {
     const newUser = req.body;
     userData[newUser.id] = newUser;
-    res.send(response);
+    res.send(newUser);
 });
 
 router.delete('/delete-user/:id', (req, res) => {
