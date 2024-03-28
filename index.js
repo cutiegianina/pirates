@@ -1,12 +1,8 @@
 import express from 'express';
-import { readFile } from 'fs/promises';
 import { StatusCode } from './constants/status-codes.js';
 
 const app = express();
-//const router = express.Router();
-
 app.use(express.json());
-//app.use('/api/v1', router);
 
 
 const users = {
