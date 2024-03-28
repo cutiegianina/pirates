@@ -1,11 +1,15 @@
 import express from 'express';
 import { readFile } from 'fs/promises';
-import { StatusCode } from './constants/status-codes.js';
+import { StatusCode } from '../constants/status-codes.js';
 
 const app = express();
-app.use(express.json());
+const router = express.Router();
 
-const users = await readFile('./data/users.json', 'utf-8');
+app.use(express.json());
+app.use('/api/v1', router);
+
+
+const users = await readFile('../data/users.json', 'utf-8');
 
 const createHashMap = (data) =>  {
     const tempData = {};
@@ -26,9 +30,9 @@ const createHashMap = (data) =>  {
 const jsonUserData = JSON.parse(users).Users;
 const userData = createHashMap(jsonUserData);
 
-app.get('/', (req, res) => res.send('Express on vercel!'));
+router.get('/', (req, res) => res.send('Express on vercel!'));
 
-app.get('/get-users', async (req, res) => { 
+router.get('/get-users', async (req, res) => { 
     const response = Object.values(userData);
     if (response == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
@@ -37,7 +41,7 @@ app.get('/get-users', async (req, res) => {
     res.send(response); 
 });
 
-app.get('/get-user/:id', async (req, res) => {
+router.get('/get-user/:id', async (req, res) => {
     var user = userData[req.params.id];
     if (user == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
@@ -46,13 +50,13 @@ app.get('/get-user/:id', async (req, res) => {
     res.send(user);
 });
 
-app.post('/create-user', (req, res) => {
+router.post('/create-user', (req, res) => {
     const newUser = req.body;
     userData[newUser.id] = newUser;
     res.send(response);
 });
 
-app.delete('/delete-user/:id', (req, res) => {
+router.delete('/delete-user/:id', (req, res) => {
     if (userData[req.params.id] == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
         return;

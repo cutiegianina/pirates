@@ -2,5 +2,8 @@
   "dependencies": {
     "express": "^4.18.3"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "vercel-build": "echo hi pirates!"
+  }
 }
