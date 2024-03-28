@@ -62,7 +62,7 @@ app.get('/get-pirates', async (req, res) => {
         return;
     }
     var prettifyResponse = `<body style="background-color: #000;">
-        <pre style="color: #fff;">${JSON.stringify(response, null, ' ')}</pre> </body>`;
+        <pre style="color: #25c053;">${JSON.stringify(response, null, ' ')}</pre> </body>`;
     res.send(prettifyResponse); 
 });
 
