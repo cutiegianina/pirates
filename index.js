@@ -9,7 +9,30 @@ app.use(express.json());
 //app.use('/api/v1', router);
 
 
-const users = await readFile('data/users.json', 'utf-8');
+const users = {
+    "Users": [ 
+        { 
+            "id": 1,
+            "name": "Richard",
+            "gender": "Male"
+        },
+        {
+            "id": 2,
+            "name": "Luffy",
+            "gender": "Male"
+        },
+        {
+            "id": 3,
+            "name": "Nami",
+            "gender": "Female"
+        },
+        {
+            "id": 2,
+            "name": "Sanji",
+            "gender": "Male"
+        }
+    ]
+};
 
 const createHashMap = (data) =>  {
     const tempData = {};
@@ -27,8 +50,7 @@ const createHashMap = (data) =>  {
     return tempData;
 }
 
-const jsonUserData = JSON.parse(users).Users;
-const userData = createHashMap(jsonUserData);
+const userData = createHashMap(users.Users);
 
 app.get('/', (req, res) => res.send('Express on vercel!'));
 
