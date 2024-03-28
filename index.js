@@ -61,7 +61,8 @@ app.get('/get-pirates', async (req, res) => {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
         return;
     }
-    var prettifyResponse = `<pre>${JSON.stringify(response, null, ' ')}</pre>`;
+    var prettifyResponse = `<body style="background-color: #000;">
+        <pre style="color: #fff;">${JSON.stringify(response, null, ' ')}</pre> </body>`;
     res.send(prettifyResponse); 
 });
 
@@ -74,13 +75,13 @@ app.get('/get-pirate/:id', async (req, res) => {
     res.send(user);
 });
 
-app.post('/create-user', (req, res) => {
+app.post('/create-pirate', (req, res) => {
     const newUser = req.body;
     userData[newUser.id] = newUser;
     res.send(newUser);
 });
 
-app.delete('/delete-user/:id', (req, res) => {
+app.delete('/delete-pirate/:id', (req, res) => {
     if (userData[req.params.id] == null) {
         res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
         return;
