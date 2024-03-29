@@ -1,9 +1,59 @@
 import express from 'express';
 import { StatusCode } from './constants/status-codes.js';
+import { connectToDb } from './data/server.js';
+import { userSchema } from './models/users.js'
+import mongoose from 'mongoose';
 
 const app = express();
 app.use(express.json());
 
+//const run = require('./server.js');
+
+
+// (async () => {
+//     await connectToDb();
+//     // Start your Express.js server logic here
+// })();
+
+// const User = mongoose.model('users', userSchema); // Create the model
+
+// async function getAllUsers() {
+//     console.log('Connection established');
+
+//     const documents = await User.find();
+//     console.log(documents);
+//     console.log(JSON.stringify(documents));
+// }
+
+// await getAllUsers();
+
+// ====== Initiate Database Connection ======
+
+(async () => {
+    try {
+        await connectToDb();
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        process.exit(1); // Exit the process on connection failure
+    }
+})();
+
+
+const User = mongoose.model('users', userSchema); // Create the model
+
+async function getAllUsers() {
+    try {
+        console.log('Fetching all users...');
+        const users = await User.find();
+        if (users != null)
+            return users;
+        else
+            return StatusCode.NotFound;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+}
 
 const users = {
     "Users": [ 
@@ -53,17 +103,13 @@ const createHashMap = (data) =>  {
 
 const userData = createHashMap(users.Users);
 
+// ==== API ENDPOINTS ====
+
 app.get('/', (req, res) => res.send('Express on vercel!'));
 
 app.get('/get-pirates', async (req, res) => { 
-    const response = Object.values(userData);
-    if (response == null) {
-        res.status(StatusCode.NotFound.code).end(StatusCode.NotFound.statusPhrase);
-        return;
-    }
-    var prettifyResponse = `<body style="background-color: #000;">
-        <pre style="color: #25c053;">${JSON.stringify(response, null, ' ')}</pre> </body>`;
-    res.send(prettifyResponse); 
+    const users = await getAllUsers();
+    res.send(users); 
 });
 
 app.get('/get-pirate/:id', async (req, res) => {
