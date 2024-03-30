@@ -6,11 +6,13 @@ config();
 
 export async function connectToDb() {
   try {
-    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
+    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+      serverApi: ServerApiVersion.v1
+    });
     console.log("Connected to MongoDB!");
   } catch (err) {
     console.error("Error connecting to MongoDB:", err);
-    process.exit(1); // Exit the process on connection failure
+    process.exit(1);
   }
 }
 

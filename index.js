@@ -1,13 +1,16 @@
 import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 import { StatusCode } from './constants/status-codes.js';
 import { connectToDb } from './data/server.js';
 import { userSchema } from './models/users.js'
-import mongoose from 'mongoose';
+import { apiKeys } from './models/api-keys.js';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-// ====== Initiate Database Connection ======
+// ==== Initiate Database Connection ====
 
 (async () => {
     try {
@@ -18,29 +21,41 @@ app.use(express.json());
     }
 })();
 
+// ==== Database Schemas ====
 
 const User = mongoose.model('users', userSchema);
+const APIKeys = mongoose.model('api_keys', apiKeys);
 
-async function getAllUsers() {
-    try {
-        console.log('Fetching all users...');
-        const users = await User.find();
-        if (users != null)
-            return users;
-        else
-            return StatusCode.NotFound;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        throw error;
-    }
+// ==== Middlewares ====
+
+const authenticateAPIKey = async (req, res, next) => {
+    await APIKeys
+        .findOne({ key: req.headers['key'] })
+        .then(key => {
+            if (key)
+                next();
+            else
+                res.status(StatusCode.UnAuthorized.code).end(StatusCode.UnAuthorized.statusPhrase);
+        })
+        .catch(err => {
+            res.status(StatusCode.BadRequest.code).end(StatusCode.BadRequest.statusPhrase);
+        })
+};
+
+const globalErrorHandler = (err, req, res, next) => {
+    console.error('Global error handler:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
 }
+
+app.use(authenticateAPIKey);
+app.use(globalErrorHandler);
 
 // ==== API ENDPOINTS ====
 
 app.get('/', (req, res) => res.send('Welcome to Richard\'s API!'));
 
 app.get('/get-pirates', async (req, res) => { 
-    const users = await getAllUsers();
+    const users = await User.find();
     res.send(users); 
 });
 
