@@ -3,8 +3,6 @@ import { Pirate } from '../models/pirates.js'
 
 export const pirateRouter = express.Router();
 
-pirateRouter.get('/', (req, res) => res.send('Welcome to Richard\'s API!'));
-
 pirateRouter.get('/get', async (req, res) => { 
     const pirates = await Pirate.find();
     res.send(pirates); 
