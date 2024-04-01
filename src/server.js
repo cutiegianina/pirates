@@ -24,12 +24,12 @@ app.use(globalErrorHandler);
 
 server.listen(port, async () => {
     console.log(`Server is running on port ${port}`)
-    await connectToDb();
+    //await connectToDb();
 });
 
-// server.on('listening', async () => {
-//     await connectToDb();
-// });
+server.on('listening', async () => {
+    await connectToDb();
+});
 
 export default app;
 
