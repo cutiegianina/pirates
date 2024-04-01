@@ -4,21 +4,13 @@ import cors from 'cors';
 import { connectToDb } from './config/database.js';
 import { authenticateAPIKey } from './middlewares/authorize.js';
 import { globalErrorHandler } from './middlewares/error-handler.js';
-import pirateRouter from './controllers/pirateController.js';
+import { pirateRouter } from './controllers/pirateController.js';
 
 export const app = express();
 
 const server = http.createServer(app);
 
 const port = process.env.PORT;
-
-server.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-});
-
-server.on('listening', async () => {
-    await connectToDb();
-});
 
 app.use(cors());
 
@@ -29,6 +21,14 @@ app.use('/api/pirates', pirateRouter);
 //app.use(authenticateAPIKey);
 
 app.use(globalErrorHandler);
+
+server.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+});
+
+server.on('listening', async () => {
+    await connectToDb();
+});
  
 
 
