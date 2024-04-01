@@ -18,7 +18,7 @@ app.post('/create', async (req, res) => {
     res.send(response);
 });
 
-app.post('/update/:id', async (req, res) => {
+app.put('/update/:id', async (req, res) => {
     const response = await Pirate.findByIdAndUpdate(
         req.params.id,
         req.body
