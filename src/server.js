@@ -6,7 +6,7 @@ import { authenticateAPIKey } from './middlewares/authorize.js';
 import { globalErrorHandler } from './middlewares/error-handler.js';
 import { pirateRouter } from './controllers/pirateController.js';
 
-export const app = express();
+const app = express();
 
 const server = http.createServer(app);
 
@@ -22,14 +22,16 @@ app.use('/api/pirates', pirateRouter);
 
 app.use(globalErrorHandler);
 
-server.listen(port, () => {
+server.listen(port, async () => {
     console.log(`Server is running on port ${port}`)
-});
-
-server.on('listening', async () => {
     await connectToDb();
 });
- 
+
+// server.on('listening', async () => {
+//     await connectToDb();
+// });
+
+export default app;
 
 
 // const createHashMap = (data) =>  {
