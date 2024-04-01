@@ -4,7 +4,7 @@ import cors from 'cors';
 import { connectToDb } from './config/database.js';
 import { authenticateAPIKey } from './middlewares/authorize.js';
 import { globalErrorHandler } from './middlewares/error-handler.js';
-import { pirateRouter } from './controllers/pirateController.js';
+import pirateRouter from './controllers/pirateController.js';
 import indexRouter from './routes/index.js';
 
 const app = express();
