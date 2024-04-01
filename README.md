@@ -1,4 +1,4 @@
-Web API project using express.js.
+Web API project using ExpressJS & MongoDB Atlas.
 
 // TODO
   1. Will integrate with MongoDB cloud in the future. (DONE)
