@@ -3,5 +3,6 @@ export const StatusCode = {
     BadRequest: { code: 400, statusPhrase: 'Bad Reqest' },
     Forbidden: { code: 400, statusPhrase: 'Forbidden' },
     UnAuthorized: { code: 401, statusPhrase: 'UnAuthorized' },
-    NotFound: { code: 404, statusPhrase: 'Not Found'}
+    NotFound: { code: 404, statusPhrase: 'Not Found'},
+    InternalServerError: { code: 500, statusPhrase: 'Internal Server Error' }
 };
